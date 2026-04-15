@@ -60,7 +60,7 @@ Want to run this God-Level IDE on your local machine? Follow these steps:
 ### Steps
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/shreyaagarwal156/Smart-Hinglish-Compiler-IDE-Phase.git](https://github.com/shreyaagarwal156/Smart-Hinglish-Compiler-IDE-Phase.git)
+   git clone [https://github.com/shreyaagarwal156/Smart-Hinglish-Compiler-IDE.git](https://github.com/shreyaagarwal156/Smart-Hinglish-Compiler-IDE.git)
    cd Smart-Hinglish-Compiler-IDE-Phase
 Create a Virtual Environment (Optional but recommended):
 
