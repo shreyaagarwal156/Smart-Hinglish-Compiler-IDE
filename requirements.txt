@@ -1,0 +1,5 @@
+Flask==3.0.2
+sly==0.5
+scikit-learn==1.4.1.post1
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.25.0

@@ -1,0 +1,131 @@
+<nav class="bg-[#010409] border-b border-gray-800 text-gray-300 px-4 py-2.5 flex justify-between items-center select-none z-40 shadow-sm relative">
+    
+    <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-2 group cursor-pointer">
+            <div class="bg-blue-600/20 p-1.5 rounded-md border border-blue-500/30 group-hover:bg-blue-600/30 transition-colors">
+                <i class="fa-solid fa-code-merge text-blue-500 text-lg"></i>
+            </div>
+            <span class="text-[15px] font-bold tracking-wide text-white">
+                Hinglish<span class="text-blue-500">IDE</span>
+            </span>
+        </div>
+        
+        <div class="hidden md:flex space-x-2 text-[13px] font-medium">
+            <button id="btnDictionary" class="px-4 py-1.5 bg-gray-800 hover:bg-blue-600 text-gray-300 hover:text-white rounded transition-colors flex items-center space-x-2 border border-gray-700 hover:border-blue-500 shadow-sm">
+                <i class="fa-solid fa-book-open text-blue-400"></i>
+                <span>Hinglish Library</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex items-center space-x-4 text-[13px]">
+        <div class="flex items-center space-x-2 px-3 py-1 bg-green-500/10 text-green-400 rounded-full border border-green-500/20">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span class="font-medium">Engine Online</span>
+        </div>
+    </div>
+</nav>
+
+<div id="dictModal" class="fixed inset-0 bg-black/80 hidden z-[100] flex items-center justify-center backdrop-blur-sm transition-opacity">
+    <div class="bg-[#0d1117] border border-gray-700 rounded-lg shadow-2xl w-[700px] max-w-[90vw] overflow-hidden flex flex-col transform scale-100">
+        
+        <div class="px-6 py-4 border-b border-gray-800 flex justify-between items-center bg-[#161b22]">
+            <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+                <i class="fa-solid fa-book-open text-blue-500"></i>
+                <span>Hinglish Keyword Library</span>
+            </h2>
+            <button id="closeDict" class="text-gray-500 hover:text-red-400 transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <div class="p-6 overflow-y-auto max-h-[70vh] custom-scrollbar">
+            <table class="w-full text-left text-sm text-gray-300">
+                <thead class="text-[11px] text-gray-500 uppercase bg-gray-900/50 tracking-wider">
+                    <tr>
+                        <th class="px-4 py-3 rounded-tl-md">Hinglish Word</th>
+                        <th class="px-4 py-3">Meaning / Usage</th>
+                        <th class="px-4 py-3 rounded-tr-md">Code Example</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800 font-mono text-[13px]">
+                    
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">maan_lo</td>
+                        <td class="px-4 py-3 text-gray-400">Variable declaration (var/let)</td>
+                        <td class="px-4 py-3 text-blue-300">maan_lo x = 10;</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">dikhao</td>
+                        <td class="px-4 py-3 text-gray-400">Print to console</td>
+                        <td class="px-4 py-3 text-blue-300">dikhao("Hello Bhai");</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">poocho</td>
+                        <td class="px-4 py-3 text-gray-400">Take user input (stdin)</td>
+                        <td class="px-4 py-3 text-blue-300">maan_lo a = poocho();</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">agar</td>
+                        <td class="px-4 py-3 text-gray-400">If condition</td>
+                        <td class="px-4 py-3 text-blue-300">agar (x > 5) { ... }</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">warna</td>
+                        <td class="px-4 py-3 text-gray-400">Else condition</td>
+                        <td class="px-4 py-3 text-blue-300">warna { ... }</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">jab_tak</td>
+                        <td class="px-4 py-3 text-gray-400">While loop</td>
+                        <td class="px-4 py-3 text-blue-300">jab_tak (i < 10) { ... }</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">kaam</td>
+                        <td class="px-4 py-3 text-gray-400">Function definition</td>
+                        <td class="px-4 py-3 text-blue-300">kaam add() { ... }</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">bhej_do</td>
+                        <td class="px-4 py-3 text-gray-400">Return value</td>
+                        <td class="px-4 py-3 text-blue-300">bhej_do result;</td>
+                    </tr>
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-pink-400">mangaao</td>
+                        <td class="px-4 py-3 text-gray-400">Import module</td>
+                        <td class="px-4 py-3 text-blue-300">mangaao math;</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dictModal = document.getElementById('dictModal');
+        const btnDictionary = document.getElementById('btnDictionary');
+        const closeDict = document.getElementById('closeDict');
+
+        // Open Modal
+        btnDictionary.addEventListener('click', () => {
+            dictModal.classList.remove('hidden');
+        });
+
+        // Close Modal via button
+        closeDict.addEventListener('click', () => {
+            dictModal.classList.add('hidden');
+        });
+
+        // Close Modal by clicking outside
+        dictModal.addEventListener('click', (e) => {
+            if (e.target === dictModal) {
+                dictModal.classList.add('hidden');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,220 @@
+// ======================================================================
+// HINGLISH COMPILER - (15 EXAMPLES)
+// ======================================================================
+
+// ----------------------------------------------------------------------
+// LEVEL 1: EASY (Basics, Output, Variables)
+// ----------------------------------------------------------------------
+
+// Example 1: Hello World
+dikhao("--- Example 1: Hello World ---");
+
+// Example 2: Variables and Basic Math
+maan_lo a = 15;
+maan_lo b = 25;
+maan_lo sum = a + b;
+dikhao("15 + 25 ka sum hai:");
+dikhao(sum);
+
+
+// Example 3: User Input (poocho) aur Conditionals
+
+dikhao("Apki age kya hai ? :");
+maan_lo age = poocho();
+
+agar (age >= 18) {
+    dikhao("Tum vote de sakta ho!");
+} warna {
+    dikhao("Abhi tum vote nhi de skte.");
+}
+
+
+// Example 4: Simple While Loop (jab_tak)
+
+maan_lo counter = 1;
+dikhao("Counting to 3:");
+jab_tak (counter <= 3) {
+    dikhao(counter);
+    counter = counter + 1;
+}
+
+
+// ----------------------------------------------------------------------
+// LEVEL 2: MEDIUM (Optimizer Tests, Arrays, Logic)
+// ----------------------------------------------------------------------
+
+// Example 5: The Optimizer Test (Constant Folding & Dead Code)
+
+maan_lo heavy_math = 10 * 5 * 2; 
+agar (0) {
+    dikhao("Yeh dead code hai, output mein nahi aayega.");
+} warna {
+    dikhao("Optimizer working: Dead code removed!");
+}
+
+
+// Example 6: Array Creation and Indexing
+
+maan_lo friends = [100, 200, 300];
+dikhao("Pehla dost ka score:");
+dikhao(friends[0]);
+
+
+// Example 7: Array Updating
+
+maan_lo scores = [50, 60];
+scores[1] = 99; // Updating index 1
+dikhao("Updated score at index 1:");
+dikhao(scores[1]);
+
+
+// Example 8: Even/Odd Checker (Without Modulo %)
+
+maan_lo check_num = 44;
+maan_lo half = check_num / 2;
+
+agar (half * 2 == check_num) {
+    dikhao("Number is EVEN");
+} warna {
+    dikhao("Number is ODD");
+}
+
+
+// Example 9: Sum of Array Elements
+
+maan_lo marks = [10, 20, 30, 40];
+maan_lo total = 0;
+maan_lo i = 0;
+
+jab_tak (i < 4) {
+    total = total + marks[i];
+    i = i + 1;
+}
+dikhao("Total Array Sum:");
+dikhao(total);
+
+
+// ----------------------------------------------------------------------
+// LEVEL 3: ADVANCED (Complex Logic & Math)
+// ----------------------------------------------------------------------
+
+// Example 10: Iterative Factorial
+
+maan_lo n = 5;
+maan_lo fact = 1;
+
+jab_tak (n > 0) {
+    fact = fact * n;
+    n = n - 1;
+}
+dikhao("Factorial of 5 is:");
+dikhao(fact);
+
+
+// Example 11: Fibonacci Sequence
+
+maan_lo terms = 7;
+maan_lo f1 = 0;
+maan_lo f2 = 1;
+maan_lo count = 0;
+
+jab_tak (count < terms) {
+    dikhao(f1);
+    maan_lo next = f1 + f2;
+    f1 = f2;
+    f2 = next;
+    count = count + 1;
+}
+
+
+// Example 12: Find Maximum in Array
+
+maan_lo data = [14, 89, 32, 99, 12];
+maan_lo max_val = data[0];
+maan_lo idx = 1;
+
+jab_tak (idx < 5) {
+    agar (data[idx] > max_val) {
+        max_val = data[idx];
+    } warna {
+        // Do nothing
+    }
+    idx = idx + 1;
+}
+dikhao("Maximum value hai:");
+dikhao(max_val);
+
+
+// Example 13: Collatz Conjecture (3n + 1 Problem)
+
+maan_lo c_num = 6;
+dikhao("Starting Collatz for:");
+dikhao(c_num);
+
+jab_tak (c_num > 1) {
+    maan_lo ch_half = c_num / 2;
+    agar (ch_half * 2 == c_num) {
+        c_num = c_num / 2;
+    } warna {
+        c_num = (c_num * 3) + 1;
+    }
+    dikhao(c_num);
+}
+
+
+// ----------------------------------------------------------------------
+// LEVEL 4: DSA / PRO LEVEL (Search & Number Theory)
+// ----------------------------------------------------------------------
+
+// Example 14: Prime Number Checker
+
+maan_lo p_num = 17;
+maan_lo div = 2;
+maan_lo is_prime = 1;
+maan_lo limit = p_num / 2;
+
+jab_tak (div <= limit) {
+    // Check divisibility
+    maan_lo temp = (p_num / div) * div;
+    agar (temp == p_num) {
+        is_prime = 0;
+        div = limit + 1; // Break loop
+    } warna {
+        div = div + 1;
+    }
+}
+
+agar (is_prime == 1) {
+    dikhao("Number is Prime!");
+} warna {
+    dikhao("Number is NOT Prime.");
+}
+
+
+// Example 15: Binary Search (Iterative)
+
+maan_lo target = 42;
+maan_lo low = 0;
+maan_lo high = 100;
+maan_lo found = 0;
+
+jab_tak (low <= high) {
+    maan_lo mid = (low + high) / 2;
+    
+    agar (mid == target) {
+        dikhao("Target Found at mid point!");
+        dikhao(mid);
+        found = 1;
+        low = high + 1; // Break
+    } warna {
+        agar (mid < target) {
+            low = mid + 1;
+        } warna {
+            high = mid - 1;
+        }
+    }
+}
+
+agar (found == 0) {
+    dikhao("Target not found.");
+}

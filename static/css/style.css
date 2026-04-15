@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+code, pre, .font-mono {
+    font-family: 'Fira Code', monospace;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: #0a0c10; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #8b949e; }
+
+/* Split.js Gutter Styling (The draggable divider) */
+.gutter {
+    background-color: #30363d;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    cursor: col-resize;
+    transition: background-color 0.2s ease;
+}
+.gutter:hover {
+    background-color: #3b82f6; /* Blue glow on hover */
+}
+.gutter.gutter-vertical {
+    cursor: row-resize;
+}
+
+/* Terminal Cursor */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+.animate-pulse {
+    animation: blink 1s step-end infinite;
+}
+
+/* Syntax Highlighting Colors for the Output Code pane */
+.keyword { color: #ff7b72; font-weight: bold; }
+.string { color: #a5d6ff; }
+.number { color: #79c0ff; }
+.comment { color: #8b949e; font-style: italic; }

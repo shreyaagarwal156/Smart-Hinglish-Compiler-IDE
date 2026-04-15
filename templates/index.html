@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="flex w-full h-full bg-[#0d1117] text-white">
+
+    <div class="w-1/2 flex flex-col border-r border-gray-800">
+        <div class="bg-[#161b22] px-4 py-3 flex justify-between items-center border-b border-gray-800">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-code text-blue-500"></i>
+                <span class="font-semibold text-gray-300">main.hng</span>
+            </div>
+
+            <div class="flex items-center space-x-5">
+                <label class="flex items-center cursor-pointer">
+                    <span class="mr-3 text-xs font-bold text-gray-400 uppercase">Optimizer</span>
+                    <div class="relative">
+                        <input type="checkbox" id="optToggle" class="sr-only" checked>
+                        <div id="optBg" class="block w-10 h-6 bg-blue-500 rounded-full transition-colors"></div>
+                        <div id="optDot" class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform translate-x-4"></div>
+                    </div>
+                </label>
+                <button id="compileBtn" class="bg-blue-600 hover:bg-blue-500 px-5 py-1.5 rounded shadow flex items-center space-x-2 transition-colors">
+                    <i class="fa-solid fa-play text-xs text-white"></i>
+                    <span class="font-bold">Compile & Run</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="relative flex-grow w-full bg-[#1e1e1e]">
+            <div id="editor" class="absolute inset-0"></div>
+        </div>
+    </div>
+
+    <div class="w-1/2 flex flex-col bg-[#0a0c10]">
+        
+        <div class="bg-[#161b22] flex justify-between items-center border-b border-gray-800">
+            <div class="flex" id="languageTabs">
+                <button class="lang-tab px-6 py-2.5 font-bold border-b-2 border-blue-500 text-blue-400 transition-colors" data-lang="python">Python</button>
+                <button class="lang-tab px-6 py-2.5 font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-colors" data-lang="cpp">C++</button>
+                <button class="lang-tab px-6 py-2.5 font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-colors" data-lang="java">Java</button>
+                <button class="lang-tab px-6 py-2.5 font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-colors" data-lang="c">C</button>
+            </div>
+            
+            <button id="btnDownloadCurrent" class="mr-4 px-4 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold rounded transition-colors flex items-center space-x-2">
+                <i class="fa-solid fa-download"></i>
+                <span>Download</span>
+            </button>
+        </div>
+
+        <div class="flex-grow p-4 overflow-auto relative h-1/2 border-b border-gray-800">
+            <pre><code id="outputCode" class="text-gray-300 font-mono text-sm">// Compiled code will be displayed here...</code></pre>
+        </div>
+
+        <div class="h-1/6 flex flex-col bg-[#0d1117] border-b border-gray-800">
+            <div class="bg-[#161b22] px-4 py-1 flex justify-between items-center border-b border-gray-800">
+                <span class="text-[11px] text-gray-400 font-mono uppercase tracking-widest"><i class="fa-solid fa-keyboard mr-2"></i>Standard Input (stdin)</span>
+            </div>
+            <textarea id="stdinBox" class="flex-grow bg-[#0d1117] text-gray-300 p-2 font-mono text-sm resize-none focus:outline-none" placeholder="Agar tumhara code poocho() use karta hai, toh input yahan likho..."></textarea>
+        </div>
+
+        <div class="h-1/3 flex flex-col bg-black">
+            <div class="bg-gray-900 px-4 py-1.5 flex justify-between items-center border-b border-gray-800">
+                <span class="text-xs text-gray-500 font-mono uppercase">Diagnostic Console</span>
+                <button id="clearTerminal" class="text-gray-500 hover:text-red-400"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            <div id="terminalContent" class="flex-grow p-3 text-sm font-mono overflow-auto space-y-1">
+                <div class="text-gray-500">System Initializing...</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    
+    const term = document.getElementById('terminalContent');
+    function logTerm(msg, type="info") {
+        let color = type === "error" ? "text-red-400" : (type === "success" ? "text-green-400" : (type === "warn" ? "text-yellow-400" : "text-gray-300"));
+        term.innerHTML += `<div class="${color}">> ${msg}</div>`;
+        term.scrollTop = term.scrollHeight;
+    }
+    document.getElementById('clearTerminal').addEventListener('click', () => { term.innerHTML = ""; });
+
+    const optToggle = document.getElementById('optToggle');
+    const optBg = document.getElementById('optBg');
+    const optDot = document.getElementById('optDot');
+    optToggle.addEventListener('change', (e) => {
+        if(e.target.checked) {
+            optBg.classList.replace('bg-gray-700', 'bg-blue-500'); optDot.classList.replace('translate-x-0', 'translate-x-4');
+        } else {
+            optBg.classList.replace('bg-blue-500', 'bg-gray-700'); optDot.classList.replace('translate-x-4', 'translate-x-0');
+        }
+    });
+
+    if (typeof require !== 'undefined') {
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            window.editor = monaco.editor.create(document.getElementById('editor'), {
+                value: "dikhao(\"Teri age kya hai?\");\nmaan_lo age = poocho();\n\nagar (age >= 18) {\n    dikhao(\"Bhai tu code likh sakta hai!\");\n} warna {\n    dikhao(\"Pehle school jaa bhai.\");\n}",
+                language: 'javascript', theme: 'vs-dark', automaticLayout: true, minimap: { enabled: false }, fontSize: 16
+            });
+            logTerm("IDE Workspace Ready.", "success");
+        });
+    }
+
+    let activeLang = 'python';
+    let currentCompiledCodes = { python: "// Not compiled yet.", cpp: "// Not compiled yet.", java: "// Not compiled yet.", c: "// Not compiled yet." };
+
+    document.querySelectorAll('.lang-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            document.querySelectorAll('.lang-tab').forEach(t => {
+                t.classList.remove('border-blue-500', 'text-blue-400'); t.classList.add('border-transparent', 'text-gray-500');
+            });
+            e.target.classList.remove('border-transparent', 'text-gray-500'); e.target.classList.add('border-blue-500', 'text-blue-400');
+            activeLang = e.target.dataset.lang;
+            document.getElementById('outputCode').textContent = currentCompiledCodes[activeLang];
+        });
+    });
+
+    document.getElementById('compileBtn').addEventListener('click', async () => {
+        if (!window.editor) return;
+        const code = window.editor.getValue();
+        const isOptimized = document.getElementById('optToggle').checked;
+        const stdinData = document.getElementById('stdinBox').value;
+
+        logTerm("Compiling & Running...", "info");
+        document.getElementById('outputCode').textContent = "// Processing AST...";
+
+        try {
+            const response = await fetch('/compile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code, optimize: isOptimized, stdin: stdinData }) 
+            });
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                currentCompiledCodes = result.compiled_codes;
+                document.getElementById('outputCode').textContent = currentCompiledCodes[activeLang];
+                logTerm("AST Parsing Successful!", "success");
+
+                logTerm("--------- PROGRAM OUTPUT ---------", "warn");
+                if (result.execution_output && result.execution_output.trim() !== "") {
+                    const outputLines = result.execution_output.split('\n');
+                    outputLines.forEach(line => {
+                        if (line.trim() !== "") { logTerm(`${line}`, "info"); }
+                    });
+                } else {
+                    logTerm("(No output printed by the program)", "info");
+                }
+                logTerm("----------------------------------", "warn");
+
+            } else {
+                document.getElementById('outputCode').textContent = "// Error in code. Check terminal.";
+                logTerm(result.console, "error");
+            }
+        } catch (err) {
+            logTerm("Backend Error: Could not reach Flask server.", "error");
+        }
+    });
+
+    // DOWNLOAD LOGIC RESTORED
+    document.getElementById('btnDownloadCurrent').addEventListener('click', () => {
+        const codeToDownload = currentCompiledCodes[activeLang];
+        if (codeToDownload.includes("// Not compiled yet")) {
+            logTerm("Pehle code compile karlo bhai!", "error"); return;
+        }
+
+        const extMap = { 'python': 'py', 'cpp': 'cpp', 'java': 'java', 'c': 'c' };
+        const ext = extMap[activeLang];
+
+        const blob = new Blob([codeToDownload], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `main.${ext}`;
+        document.body.appendChild(a); a.click();
+        window.URL.revokeObjectURL(url);
+        
+        logTerm(`Downloaded main.${ext}`, "success");
+    });
+});
+</script>
+{% endblock %}
